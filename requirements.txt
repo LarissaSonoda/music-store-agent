@@ -1,0 +1,8 @@
+dotenv~=0.9.9
+python-dotenv~=1.2.4
+langchain-chroma~=1.1.0
+langchain-huggingface~=1.2.3
+langchain-core~=1.7.3
+langchain-google-genai~=4.4.2
+pypdf~=6.21.4
+langchain-text-splitters~=1.1.3
