@@ -72,6 +72,15 @@ Faça uma requisição `POST /chat` com JSON:
 
 No Swagger em `/docs`, é possível testar o endpoint sem ferramenta adicional. A resposta contém `answer` e `session_id`. Envie o mesmo `session_id` nas perguntas subsequentes para usar o histórico da sessão. As sessões ficam na memória do processo: são perdidas ao reiniciar a API e não são compartilhadas entre múltiplas instâncias.
 
+No campo session_id utilize o uuid contido na resposta da primeira mensagem enviada ao agente.
+
+```json
+{
+  "question": "Qual é o preço de outros instrumentos dessa categoria?",
+  "session_id": "uuid_da_session" 
+}
+```
+
 ## Decisões técnicas
 
 - **FastAPI:** framework Python com validação dos dados de entrada via Pydantic e documentação OpenAPI/Swagger automática, adequado para disponibilizar rapidamente endpoints de chat.
