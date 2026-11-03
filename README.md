@@ -89,6 +89,7 @@ No Swagger em `/docs`, é possível testar o endpoint sem ferramenta adicional. 
 - A chamada ao modelo é síncrona no fluxo da requisição; latência de rede e do provedor afeta o tempo de resposta. Também faltam timeout, retentativas controladas, rate limiting e métricas detalhadas por etapa.
 - Não há suíte automatizada de testes ou avaliação sistemática de qualidade do retrieval e das respostas. Eu adicionaria testes de API, casos de regressão para perguntas frequentes e avaliação de precisão/recall dos trechos recuperados.
 - O índice é local e precisa ser reconstruído quando os dados ou o modelo de embeddings mudam. Trocar o modelo exige recriar todos os vetores para manter dimensões compatíveis.
+- Não foram utilizados os dados de pedidos e de clientes pois não devem ficar expostos para o modelo.
 
 ## Uso de assistentes de código
 
