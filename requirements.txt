@@ -1,3 +1,5 @@
+fastapi
+uvicorn[standard]
 dotenv~=0.9.9
 python-dotenv~=1.2.4
 langchain-chroma~=1.1.0

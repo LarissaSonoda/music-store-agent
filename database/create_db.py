@@ -1,5 +1,6 @@
 import csv
 import os
+import re
 from pathlib import Path
 from pypdf import PdfReader
 from langchain_core.documents import Document
@@ -10,7 +11,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 PATH_DB = "../data"
-embedding_model = HuggingFaceEmbeddings(model_name=os.getenv('EMBEDDING_MODEL_NAME'))
+embedding_model = HuggingFaceEmbeddings(model_name=os.getenv('EMBEDDING_MODEL_NAME'), encode_kwargs={"normalize_embeddings":True})
+
+
+def clean(text: str) -> str:
+    # O PDF usa quebras e linhas vazias entre palavras; manter esses separadores
+    # fragmenta o texto e prejudica a busca semântica no Chroma.
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
 
 def load_docs() -> list:
     base = Path(PATH_DB)
@@ -18,7 +27,7 @@ def load_docs() -> list:
     for pdf_path in sorted(base.glob("*.pdf")):
         reader = PdfReader(str(pdf_path))
         for page_num, page in enumerate(reader.pages):
-            text = page.extract_text() or ""
+            text = clean(page.extract_text()) or ""
             documents.append(
                 Document(
                     page_content=text,
@@ -48,7 +57,8 @@ def separate_chunks(documents) -> list:
     return chunks
 
 def embed_chunks(chunks):
-    db = Chroma.from_documents(documents=chunks,embedding=embedding_model,persist_directory="db")
+    db = Chroma.from_documents(documents=chunks,embedding=embedding_model,persist_directory="db",
+                               collection_metadata={"hnsw:space": "cosine"})
     print("Banco de dados criado")
 
 def create_db():
